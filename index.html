@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cockpit - Descarga</title>
+<meta name="description" content="Descarga Cockpit: mapa y reproductor Spotify para unidades de coche Android.">
+<style>
+  :root{--bg:#0f1419;--card:#18202a;--text:#e8edf2;--muted:#93a1b0;--accent:#3ea6ff;--border:#263341}
+  @media (prefers-color-scheme: light){
+    :root{--bg:#f4f6f9;--card:#fff;--text:#18202a;--muted:#5b6b7b;--accent:#0a74da;--border:#dde3ea}
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+  main{max-width:860px;margin:0 auto;padding:40px 16px 64px}
+  h1{font-size:2.2rem;margin:0 0 8px}
+  .lead{color:var(--muted);margin:0 0 32px}
+  .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:8px}
+  .card h2{margin:0;font-size:1.25rem}
+  .card p{margin:0;color:var(--muted);font-size:.95rem;flex:1}
+  .btn{display:inline-block;margin-top:8px;padding:12px 18px;border-radius:10px;background:var(--accent);color:#fff;font-weight:600;text-decoration:none;text-align:center}
+  .btn:hover{filter:brightness(1.1)}
+  .meta{font-size:.8rem;color:var(--muted)}
+  h3{margin:40px 0 8px}
+  ol,ul{padding-left:20px;margin:0}
+  li{margin:4px 0}
+  code{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:1px 5px}
+  footer{margin-top:40px;font-size:.85rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<main>
+  <h1>Cockpit</h1>
+  <p class="lead">Mapa y reproductor Spotify para unidades de coche Android, sin depender del teléfono. Requiere Android 8 (API 26) o superior.</p>
+
+  <div class="grid">
+    <section class="card">
+      <h2>Edición Google</h2>
+      <p>Mapa, búsqueda de lugares y servicios de Google. Requiere Google Play Services en la unidad.</p>
+      <a class="btn" id="dl-google" href="downloads/Cockpit-google.apk" download>Descargar APK</a>
+      <span class="meta">Versión <span class="ver">—</span></span>
+    </section>
+    <section class="card">
+      <h2>Edición Libre</h2>
+      <p>Sin componentes de Google (mapas OpenStreetMap). Para unidades sin Play Services.</p>
+      <a class="btn" id="dl-libre" href="downloads/Cockpit-libre.apk" download>Descargar APK</a>
+      <span class="meta">Versión <span class="ver">—</span></span>
+    </section>
+  </div>
+
+  <h3>Cómo instalar</h3>
+  <ol>
+    <li>Descarga el APK desde el navegador de la unidad (o pásalo por USB / memoria).</li>
+    <li>Permite la instalación de <strong>orígenes desconocidos</strong> para ese navegador o gestor de archivos.</li>
+    <li>Abre el APK e instala. Al iniciar, sigue el asistente de requisitos.</li>
+  </ol>
+
+  <h3>Requisitos</h3>
+  <ul>
+    <li>Android 8.0 o superior</li>
+    <li>Internet y GPS propios de la unidad</li>
+    <li>Spotify instalado para el control de música</li>
+  </ul>
+
+  <footer>Los APK se sirven desde <code>downloads/</code>. La versión se lee de <code>downloads/version.json</code>.</footer>
+</main>
+<script>
+  // version.json esperado: {"google":"0.1.12","libre":"0.1.12"}
+  fetch('downloads/version.json', {cache:'no-store'})
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .then(v => {
+      const vers = document.querySelectorAll('.ver');
+      vers[0].textContent = v.google || '—';
+      vers[1].textContent = v.libre || '—';
+      if (v.google) document.getElementById('dl-google').href = 'downloads/Cockpit-' + v.google + '.apk';
+      if (v.libre) document.getElementById('dl-libre').href = 'downloads/Cockpit-libre-' + v.libre + '.apk';
+    })
+    .catch(() => {});
+</script>
+</body>
+</html>
