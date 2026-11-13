@@ -66,7 +66,7 @@
   <footer>Los APK se sirven desde <code>downloads/</code>. La versión se lee de <code>downloads/version.json</code>.</footer>
 </main>
 <script>
-  // version.json esperado: {"google":"0.1.26","libre":"0.1.26"}
+  // version.json esperado: {"google":"0.1.27","libre":"0.1.27"}
   fetch('downloads/version.json', {cache:'no-store'})
     .then(r => r.ok ? r.json() : Promise.reject())
     .then(v => {
